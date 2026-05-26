@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  coordinator:
+    image: ghcr.io/multi-agent-orchestration-core/coordinator:latest
+    ports:
+      - "8080:80"
+  eventlog:
+    image: bitnami/zookeeper:latest
+  executor:
+    image: ghcr.io/multi-agent-orchestration-core/executor:latest
+    scale: 3
+  control-plane:
+    image: ghcr.io/multi-agent-orchestration-core/control-plane:latest
+  state-store:
+    image: redis:7.0
+    ports:
+      - "6379:6379"
