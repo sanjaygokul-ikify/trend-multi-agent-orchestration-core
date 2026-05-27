@@ -28,12 +28,12 @@ class Engine:
             logger.error(f'Invalid event: {event}')
             raise InvalidEventError('Invalid event')
 
-        # Apply the event to the state replicator
         try:
+            # Apply the event to the state replicator
             self.state_replicator.apply_event(event)
         except Exception as e:
             logger.error(f'Failed to apply event: {e}')
-            raise
+            raise StateInconsistencyError('Failed to apply event')
 
         # Add the event to the event log
         self.event_log.add_event(event)
