@@ -55,3 +55,6 @@ class Engine:
     def apply_realtime_reconfiguration(self, reconfiguration: Dict[str, str]) -> None:
         # Apply the real-time reconfiguration to the control plane
         self.control_plane.apply_reconfiguration(reconfiguration)
+
+    def __del__(self) -> None:
+        self.stop()
