@@ -16,12 +16,18 @@ class Engine:
         self.running = False
 
     def start(self) -> None:
-        self.running = True
-        logger.info('Engine started')
+        if not self.running:
+            self.running = True
+            logger.info('Engine started')
+        else:
+            logger.warning('Engine is already running')
 
     def stop(self) -> None:
-        self.running = False
-        logger.info('Engine stopped')
+        if self.running:
+            self.running = False
+            logger.info('Engine stopped')
+        else:
+            logger.warning('Engine is not running')
 
     def process_event(self, event: Event) -> None:
         if not isinstance(event, Event):
