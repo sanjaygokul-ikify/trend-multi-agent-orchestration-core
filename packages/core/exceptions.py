@@ -6,3 +6,6 @@ class InvalidEventError(OrchestrationError):
 
 class StateInconsistencyError(OrchestrationError):
     pass
+
+class TimeoutError(OrchestrationError):
+    pass
