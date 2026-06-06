@@ -36,31 +36,37 @@ class Engine:
 
         try:
             # Apply the event to the state replicator
-            self.state_replicator.apply_event(event)
+            if self.state_replicator is not None:
+                self.state_replicator.apply_event(event)
         except Exception as e:
             logger.error(f'Failed to apply event: {e}')
             raise StateInconsistencyError('Failed to apply event')
 
         # Add the event to the event log
-        self.event_log.add_event(event)
+        if self.event_log is not None:
+            self.event_log.add_event(event)
 
         # Reconcile the state with the event log
-        self.reconciliation_engine.reconcile()
+        if self.reconciliation_engine is not None:
+            self.reconciliation_engine.reconcile()
 
     def reconcile(self) -> None:
         # Reconcile the state replicator with the event log
-        self.reconciliation_engine.reconcile()
+        if self.reconciliation_engine is not None:
+            self.reconciliation_engine.reconcile()
 
     def get_state(self) -> State:
-        return self.state_replicator.get_state()
+        return self.state_replicator.get_state() if self.state_replicator is not None else None
 
     def apply_temporal_logic(self, workflow_definition: Dict[str, str]) -> None:
         # Apply the temporal logic workflow definition to the state replicator
-        self.state_replicator.apply_temporal_logic(workflow_definition)
+        if self.state_replicator is not None:
+            self.state_replicator.apply_temporal_logic(workflow_definition)
 
     def apply_realtime_reconfiguration(self, reconfiguration: Dict[str, str]) -> None:
         # Apply the real-time reconfiguration to the control plane
-        self.control_plane.apply_reconfiguration(reconfiguration)
+        if self.control_plane is not None:
+            self.control_plane.apply_reconfiguration(reconfiguration)
 
     def __del__(self) -> None:
         self.stop()
