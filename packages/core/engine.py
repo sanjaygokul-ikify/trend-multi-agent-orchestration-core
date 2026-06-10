@@ -48,12 +48,18 @@ class Engine:
 
         # Reconcile the state with the event log
         if self.reconciliation_engine is not None:
-            self.reconciliation_engine.reconcile()
+            try:
+                self.reconciliation_engine.reconcile()
+            except Exception as e:
+                logger.error(f'Failed to reconcile state: {e}')
 
     def reconcile(self) -> None:
         # Reconcile the state replicator with the event log
         if self.reconciliation_engine is not None:
-            self.reconciliation_engine.reconcile()
+            try:
+                self.reconciliation_engine.reconcile()
+            except Exception as e:
+                logger.error(f'Failed to reconcile state: {e}')
 
     def get_state(self) -> State:
         return self.state_replicator.get_state() if self.state_replicator is not None else None
