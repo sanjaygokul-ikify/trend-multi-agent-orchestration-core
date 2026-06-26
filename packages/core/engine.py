@@ -76,3 +76,8 @@ class Engine:
 
     def __del__(self) -> None:
         self.stop()
+
+    # New method to add missing error handling for stop() called before start()
+    def validate_operation(self, operation: str) -> None:
+        if operation == 'stop' and not self.running:
+            raise Exception('Cannot stop an engine that has not started')
