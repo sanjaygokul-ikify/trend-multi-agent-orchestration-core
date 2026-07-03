@@ -28,6 +28,7 @@ class Engine:
             logger.info('Engine stopped')
         else:
             logger.warning('Engine is not running')
+            raise Exception('Cannot stop an engine that has not started')
 
     def process_event(self, event: Event) -> None:
         if not isinstance(event, Event):
@@ -76,8 +77,3 @@ class Engine:
 
     def __del__(self) -> None:
         self.stop()
-
-    # New method to add missing error handling for stop() called before start()
-    def validate_operation(self, operation: str) -> None:
-        if operation == 'stop' and not self.running:
-            raise Exception('Cannot stop an engine that has not started')
