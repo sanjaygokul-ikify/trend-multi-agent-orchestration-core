@@ -14,6 +14,7 @@ class Engine:
         self.reconciliation_engine = reconciliation_engine
         self.control_plane = control_plane
         self.running = False
+        self._timeout = None
 
     def start(self) -> None:
         if not self.running:
@@ -25,6 +26,8 @@ class Engine:
     def stop(self) -> None:
         if self.running:
             self.running = False
+            if self._timeout is not None:
+                self._timeout.cancel()
             logger.info('Engine stopped')
         else:
             logger.warning('Engine is not running')
@@ -77,3 +80,10 @@ class Engine:
 
     def __del__(self) -> None:
         self.stop()
+
+    # introduce a timeout in the start method to handle timeout in distributed task scheduler
+    def start_with_timeout(self, timeout: int) -> None:
+        self.start()
+        import threading
+        self._timeout = threading.Timer(timeout, self.stop)
+        self._timeout.start()
